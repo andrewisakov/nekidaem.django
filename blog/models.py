@@ -13,11 +13,6 @@ class Profile(models.Model):
 User.profile = property(lambda u: Profile.objects.get_or_create(user=u)[0])
 
 
-# class Subscribe(models.Model):
-#     author = models.OneToOneField(Profile, related_name='user', primary_key=True)
-#     user = models.OneToOneField(Profile, related_name='user', primary_key=True)
-
-
 class Post(models.Model):
     title = models.CharField(verbose_name='Заголовок', max_length=256)
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
