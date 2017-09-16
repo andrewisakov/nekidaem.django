@@ -15,10 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.views.generic import ListView
+# from django.views.generic import ListView
+from blog import views
 import blog.models as blog
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # url(r'^blogs/', ListView.as_view(model=blog.Post), name='blog_post_list')
+    url(r'^$', views.PostsListView.as_view(model=blog.Post), name='index'),
+    url(r'^authors/', views.AutorsListView.as_view(model=blog.Profile), name='authors'),
+    url(r'^author/(?P<pk>\d+)/$', views.AuthorDetails.as_view(model=blog.Profile), name='author')
 ]

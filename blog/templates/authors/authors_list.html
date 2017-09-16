@@ -1,0 +1,13 @@
+{% extends 'base_generic.html' %} {% block title %} Все Авторы {% endblock title %} {% block content %}
+<h1>Все Авторы</h1>
+{% if authors_list %}
+<ul>
+    {% for author in authors_list %}
+    <li>
+        <a href="{{ author.get_absolute_url }}">{{ author.user }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Пока никого нет...</p>
+{% endif %} {% endblock content %}

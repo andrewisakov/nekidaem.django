@@ -1,0 +1,6 @@
+{% extends 'base_generic.html' %} {% block title %} {{ author_details.user.first_name}} {{ author_details.user.last_name}} {% endblock title %} {% block content %} {% if author_details %}
+<p>Имя: {{ author_details.user.first_name}} {{ author_details.user.last_name}}</p>
+<p>Ведёт блог: {{ author_details.blog_name}}</p>
+{% else %}
+<p>Пока никого нет...</p>
+{% endif %} {% endblock content %}
