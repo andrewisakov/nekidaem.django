@@ -26,6 +26,9 @@ class Post(models.Model):
     content = models.TextField(verbose_name='Контент')
     author = models.ForeignKey(Profile)
 
+    def get_absolute_url(self):
+        return '/blog/%i/' % self.pk
+
     class Meta:
         ordering = ('-published',)
 

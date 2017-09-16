@@ -3,7 +3,7 @@ from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
-# from braces.views import LoginRequiredMixin, GroupRequiredMixin
+from braces.views import LoginRequiredMixin
 
 from .models import Post, Profile
 
@@ -30,3 +30,21 @@ class AuthorDetails(DetailView):
     # queryset = Profile.get
     pk_url_kwarg = "pk"
     template_name = 'authors/author_details.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AuthorDetails, self).get_context_data(*args, **kwargs)
+        context['author_posts'] = Post.objects.filter(author=context['author_details'].pk)
+        # print('AuthorDetails.context:', context)
+        return context
+
+
+class AuthorBlogList(ListView):
+    model = Post
+    context_object_name = 'author_posts_list'
+    author_id = "author_id"
+    template_name = 'posts/author_posts.html'
+
+    def get_queryset(self):
+        queryset = super(AuthorBlogList, self).get_queryset()
+        queryset = Post.objects.filter(author_id==author_id)
+        return queryset
