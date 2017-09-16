@@ -1,0 +1,40 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	//
+ALLOWED_HOSTS	../nekidaem_test/settings.py	/^ALLOWED_HOSTS = []$/;"	kind:variable	line:28
+AUTH_PASSWORD_VALIDATORS	../nekidaem_test/settings.py	/^AUTH_PASSWORD_VALIDATORS = [$/;"	kind:variable	line:87
+BASE_DIR	../nekidaem_test/settings.py	/^BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))$/;"	kind:variable	line:16
+BlogConfig	../blog/apps.py	/^class BlogConfig(AppConfig):$/;"	kind:class	line:4
+DATABASES	../nekidaem_test/settings.py	/^DATABASES = {$/;"	kind:variable	line:76
+DEBUG	../nekidaem_test/settings.py	/^DEBUG = True$/;"	kind:variable	line:26
+INSTALLED_APPS	../nekidaem_test/settings.py	/^INSTALLED_APPS = [$/;"	kind:variable	line:33
+LANGUAGE_CODE	../nekidaem_test/settings.py	/^LANGUAGE_CODE = 'en-us'$/;"	kind:variable	line:106
+MIDDLEWARE	../nekidaem_test/settings.py	/^MIDDLEWARE = [$/;"	kind:variable	line:42
+ROOT_URLCONF	../nekidaem_test/settings.py	/^ROOT_URLCONF = 'nekidaem_test.urls'$/;"	kind:variable	line:52
+SECRET_KEY	../nekidaem_test/settings.py	/^SECRET_KEY = '7a-)j1+@ij+876!qdjh38c-)0nn2$0)3tefi5mc(5hbi78p7f@'$/;"	kind:variable	line:23
+STATIC_URL	../nekidaem_test/settings.py	/^STATIC_URL = '\/static\/'$/;"	kind:variable	line:120
+TEMPLATES	../nekidaem_test/settings.py	/^TEMPLATES = [$/;"	kind:variable	line:54
+TIME_ZONE	../nekidaem_test/settings.py	/^TIME_ZONE = 'UTC'$/;"	kind:variable	line:108
+USE_I18N	../nekidaem_test/settings.py	/^USE_I18N = True$/;"	kind:variable	line:110
+USE_L10N	../nekidaem_test/settings.py	/^USE_L10N = True$/;"	kind:variable	line:112
+USE_TZ	../nekidaem_test/settings.py	/^USE_TZ = True$/;"	kind:variable	line:114
+WSGI_APPLICATION	../nekidaem_test/settings.py	/^WSGI_APPLICATION = 'nekidaem_test.wsgi.application'$/;"	kind:variable	line:70
+__init__.py	../blog/__init__.py	1;"	kind:file	line:1
+__init__.py	../blog/migrations/__init__.py	1;"	kind:file	line:1
+__init__.py	../nekidaem_test/__init__.py	1;"	kind:file	line:1
+admin.py	../blog/admin.py	1;"	kind:file	line:1
+application	../nekidaem_test/wsgi.py	/^application = get_wsgi_application()$/;"	kind:variable	line:16
+apps.py	../blog/apps.py	1;"	kind:file	line:1
+manage.py	../manage.py	1;"	kind:file	line:1
+models.py	../blog/models.py	1;"	kind:file	line:1
+name	../blog/apps.py	/^    name = 'blog'$/;"	kind:variable	line:5
+settings.py	../nekidaem_test/settings.py	1;"	kind:file	line:1
+tests.py	../blog/tests.py	1;"	kind:file	line:1
+urlpatterns	../nekidaem_test/urls.py	/^urlpatterns = [$/;"	kind:variable	line:19
+urls.py	../nekidaem_test/urls.py	1;"	kind:file	line:1
+views.py	../blog/views.py	1;"	kind:file	line:1
+wsgi.py	../nekidaem_test/wsgi.py	1;"	kind:file	line:1
