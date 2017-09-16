@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     blog_name = models.CharField(max_length=1024, verbose_name='Название блога')
-    subscribes = models.ManyToManyField('Profile')
+    subscribes = models.ManyToManyField('Profile', blank=True)  # Подписки
+
+    def __str__(self):
+        return (f'{self.blog_name}: {self.user.first_name} {self.user.last_name}')
 
 
 User.profile = property(lambda u: Profile.objects.get_or_create(user=u)[0])
