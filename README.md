@@ -1,2 +1,2 @@
 # nekidaem.django
-Тнстовое задание от ne_kidaem
+Тестовое задание от ne_kidaem
