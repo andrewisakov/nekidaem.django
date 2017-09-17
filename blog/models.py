@@ -44,9 +44,9 @@ def update_post(sender, instance, **kwargs):
     message = f'Пользователь {sender_profile.user.first_name} {sender_profile.user.last_name} разместил новую запись в своём блоге.'
     subject = f'Новая запись в блоге {sender_profile.user.first_name} {sender_profile.user.last_name}'
     recipient_list = [profile.user.email for profile in sender_profile.profile_set.all()]
-    print('models.update_post:', connection)
     # Пока забьём...
     # connection = mail.get_connection()
+    # print('models.update_post:', connection)
     # send_mail(subject, message, from_email, recipient_list,)
     # connection.send_messages([mail.EmailMessage(subject, message, from_email, recipient_list,),])
     # connection.close()

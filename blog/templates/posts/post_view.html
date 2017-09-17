@@ -1,7 +1,8 @@
 {% extends 'base_generic.html' %} {% block title %}Запись {{ post.id }}{% endblock title %} {% block content %} {% if post %}
 <h1>{{ post.title }}</h1>
-<p>{{ post.published }} от {{ post.author.user.first_name }}</p>
+<p>{{ post.published }} от {{ post.author.user.first_name }} {{ post.author.user.last_name }}</p>
 <p>{{ post.content }}</p>
-<a href="{% url 'publicate_post' pk=post.id %}" class="btn btn-default navbar-btn">Опубликовать</a> {% else %}
+{% if user.id == post.author_id %}
+<a href="{% url 'publicate_post' pk=post.id %}" class="btn navbar-btn">Опубликовать</a> {% endif %} {% else %}
 <p>Увы, ничего нет...</p>
 {% endif %} {% endblock content %}

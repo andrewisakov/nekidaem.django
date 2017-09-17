@@ -8,7 +8,7 @@ from django.views.generic import RedirectView
 from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse_lazy
-
+import datetime
 from .forms import LoginForm, PublicateConfirm
 from .models import Post, Profile
 
@@ -29,8 +29,11 @@ class Publicate(FormView):
     template_name = 'authors/post_publicate_confirm.html'
 
     def form_valid(self, form):
-        print('Publicate.form:', form)
-        return super(LoginView, self).form_valid(form)
+        print('Publicate.form:', self.kwargs)
+        public_post = Post.objects.get(pk=int(self.kwargs['pk']))
+        public_post.published = datetime.datetime.now()
+        public_post.save()
+        return super(Publicate, self).form_valid(form)
 
 
 class PostsListView(ListView):

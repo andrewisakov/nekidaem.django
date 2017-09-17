@@ -29,7 +29,6 @@ urlpatterns = [
     url(r'^ribbon/$', views.RibbonBlogList.as_view(), name='ribbon'),
     url(r'^login/$', views.LoginView.as_view(), name='login'),
     url(r'^logout/$', views.LogOutView.as_view(), name='logout'),
-    # url(r'^profile/(?P<pk>\d+)/$', views.ProfileView.as_view(), name='profile'),
     url(r'^subscribe/(?P<author_id>\d+)/$', views.Subscribe, name='subscribe_this_author'),
     url(r'^publicate/(?P<pk>\d+)/$', views.Publicate.as_view(), name='publicate_post'),
 ]
