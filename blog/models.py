@@ -41,8 +41,8 @@ class Post(models.Model):
 def update_post(sender, instance, **kwargs):
     sender_profile = Profile.objects.get(pk=instance.author_id)
     from_email = sender_profile.user.email
-    message = f'Пользователь {sender_profile.user.first_name} {sender_profile.user.last_name} разместил новую запись в своём блоге.'
-    subject = f'Новая запись в блоге {sender_profile.user.first_name} {sender_profile.user.last_name}'
+    message = f'Пользователь {sender_profile.user.first_name} {sender_profile.user.last_name} разместил/изменил запись в своём блоге.'
+    subject = f'Новая/изменённая запись в блоге {sender_profile.user.first_name} {sender_profile.user.last_name}'
     recipient_list = [profile.user.email for profile in sender_profile.profile_set.all()]
     # Пока забьём...
     # connection = mail.get_connection()
@@ -60,3 +60,4 @@ class ReadedPost(models.Model):
 
     class Meta:
         unique_together = (('post', 'user'),)
+

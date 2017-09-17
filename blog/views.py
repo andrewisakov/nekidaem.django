@@ -16,11 +16,8 @@ from .models import Post, Profile, ReadedPost
 
 
 class CreatePost(CreateView):
-    # model = Post
-    # fields = ['title', 'content', 'author']
     form_class = CreatePostForm
     template_name = 'posts/create_post.html'
-    # success_url = reverse_lazy('index')
 
     def get_success_url(self):
         return reverse('author_blog_list', args=(self.request.user.id,))
@@ -32,14 +29,8 @@ class CreatePost(CreateView):
         return initial
 
     def form_valid(self, form):
-        # print('CreatePost.form_valid:', form.data)
         form.data.author = self.request.user
         return super(CreatePost, self).form_valid(form)
-
-    # def form_invalid(self, form):
-    #     form.data['author'] = [self.request.user]
-    #     # print('CreatePost.form_invalid:', form.data)
-    #     return super(CreatePost, self).form_invalid(form)
 
 
 class Subscribe(FormView):
@@ -52,11 +43,8 @@ class Subscribe(FormView):
         user_id = self.request.user.id
         subscriber = Profile.objects.get(pk=user_id)
         author = Profile.objects.get(pk=author_id)
-        print('Subscribe.form_valid:', author.profile_set.all(), subscriber)
         author.profile_set.add(subscriber)
-        # print('Subscribe.form_valid:', dir(author.profile_set))
         author.save()
-        # print('Subscribe.form_valid:', author_id, user_id)
         return super(Subscribe, self).form_valid(form)
 
 
@@ -66,7 +54,6 @@ class Publicate(FormView):
     template_name = 'authors/post_publicate_confirm.html'
 
     def form_valid(self, form):
-        # print('Publicate.form:', self.kwargs)
         public_post = Post.objects.get(pk=int(self.kwargs['pk']))
         public_post.published = datetime.datetime.now()
         public_post.save()
@@ -88,9 +75,6 @@ class AuthorsListView(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(AuthorsListView, self).get_context_data(*args, **kwargs)
         context['user_profile'] = Profile.objects.get(pk=int(self.request.user.id))
-        print('AuthorsListView.context:', context)
-        for c in context['authors_list']:
-            print('AuthorsListView.author:', c.profile_set.all())
         return context
 
 
@@ -112,8 +96,9 @@ class ViewPost(DetailView):
         if self.request.user.is_authenticated:
             user_id = self.request.user.id
             post_id = self.kwargs['pk']
-            readed, created = ReadedPost.objects.get_or_create(post_id=post_id, user_id=user_id,
-                            defaults={'post_id': post_id, 'user_id': user_id})
+            readed, created = ReadedPost.objects.get_or_create(post_id=post_id,
+                                user_id=user_id,
+                                defaults={'post_id': post_id, 'user_id': user_id})
             if created:
                 readed.save()
         return context
@@ -131,8 +116,7 @@ class AuthorBlogList(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(AuthorBlogList, self).get_context_data(**kwargs)
-        print('AuthorBlogList.context:', int(self.kwargs['author_id']), self.request.user.id)
-        context['can_create'] = int(self.kwargs['author_id']) == self.request.user.id
+        context['can_create'] = (int(self.kwargs['author_id']) == self.request.user.id)
         return context
 
 
@@ -142,11 +126,9 @@ class RibbonBlogList(ListView):
     context_object_name = 'ribbon'
     template_name = 'posts/posts_ribbon.html'
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(RibbonBlogList, self).get_context_data(*args, **kwargs)
-        # print('RibbonBlogList.context:', context['ribbon'])
-        # context['ribbon'] = Post.objects.filter(author in self.request.user.profile_set.all())
-        return context
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super(RibbonBlogList, self).get_context_data(*args, **kwargs)
+    #     return context
 
 
 class LoginView(FormView):
