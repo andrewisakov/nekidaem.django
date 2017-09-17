@@ -9,7 +9,7 @@ from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse_lazy, reverse
 import datetime
-from .forms import LoginForm, PublicateConfirm, CreatePostForm
+from .forms import LoginForm, PublicateConfirm, CreatePostForm, SubscribeConfirm
 from .models import Post, Profile, ReadedPost
 
 # Create your views here.
@@ -43,11 +43,21 @@ class CreatePost(CreateView):
 
 
 class Subscribe(FormView):
-    pass
+    form_class = SubscribeConfirm
+    template_name = 'authors/subscribe_confirm.html'
+    success_url = reverse_lazy('authors')
 
-
-class MarkReaded(FormView):
-    pass
+    def form_valid(self, form):
+        author_id = self.kwargs['author_id']
+        user_id = self.request.user.id
+        subscriber = Profile.objects.get(pk=user_id)
+        author = Profile.objects.get(pk=author_id)
+        print('Subscribe.form_valid:', author.profile_set.all(), subscriber)
+        author.profile_set.add(subscriber)
+        # print('Subscribe.form_valid:', dir(author.profile_set))
+        author.save()
+        # print('Subscribe.form_valid:', author_id, user_id)
+        return super(Subscribe, self).form_valid(form)
 
 
 class Publicate(FormView):
@@ -70,10 +80,18 @@ class PostsListView(ListView):
     template_name = 'posts/index.html'
 
 
-class AutorsListView(ListView):
+class AuthorsListView(ListView):
     model = Profile
     context_object_name = 'authors_list'
     template_name = 'authors/authors_list.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AuthorsListView, self).get_context_data(*args, **kwargs)
+        context['user_profile'] = Profile.objects.get(pk=int(self.request.user.id))
+        print('AuthorsListView.context:', context)
+        for c in context['authors_list']:
+            print('AuthorsListView.author:', c.profile_set.all())
+        return context
 
 
 class AuthorDetails(DetailView):

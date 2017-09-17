@@ -44,20 +44,6 @@ class SubscribeConfirm(forms.Form):
         )
 
 
-class ReadedConfirm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(SubscribeConfirm, self).__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.form_class = 'form-horizontal'
-        self.helper.layout = Layout(
-            FormActions(
-                Submit('readed', 'Прочитал', css_class='btn-primary'),
-                Button('cancel', 'Ещё не дочитал', onclick='history.go(-1);'),
-            )
-        )
-
-
 class PublicateConfirm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(PublicateConfirm, self).__init__(*args, **kwargs)
@@ -89,5 +75,3 @@ class LoginForm(AuthenticationForm):
                 Submit('login', 'Войти', css_class='btn-primary')
             )
         )
-
-

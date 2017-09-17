@@ -4,7 +4,8 @@
 <ul>
     {% for author in authors_list %}
     <li>
-        <a href="{{ author.get_absolute_url }}">{{ author.user.first_name }} {{ author.user.last_name }}</a>
+        <a href="{{ author.get_absolute_url }}">{{ author.user.first_name }} {{ author.user.last_name }}</a> {% if user.is_authenticated %} {% if user.id != author.id %} {% if user_profile not in author.profile_set.all %}
+        <a href="{% url 'subscribe_this_author' author_id=author.id %}" class="btn btn-default navbar-btn">Подписаться</a> {% endif %} {% endif %} {% endif %}
     </li>
     {% endfor %}
 </ul>
