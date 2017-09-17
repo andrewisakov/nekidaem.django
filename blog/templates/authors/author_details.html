@@ -1,13 +1,6 @@
 {% extends 'base_generic.html' %} {% block title %} {{ author_details.user.first_name}} {{ author_details.user.last_name}} {% endblock title %} {% block content %} {% if author_details %}
 <p>Имя: {{ author_details.user.first_name}} {{ author_details.user.last_name}}</p>
-<p>Ведёт блог: {{ author_details.blog_name}}</p>
-{% if autor_posts %}
-<ul>
-    {% for post in author_posts %}
-    <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a> {{post.created}} {% if post.published %} {{post.published}} {% else %} не опубликовано {% endif %}
-    </li>
-    {% endfor %}</ul> {% else %}
-<p>Автор пока ничего не написал...</p>
-{% endif %} {% else %}
+<p>Ведёт блог: <a href="{% url 'author_blog_list' author_id=author_details.id %}">{{ author_details.blog_name }}</a></p>
+{% else %}
 <p>Пока никого нет...</p>
 {% endif %} {% endblock content %}

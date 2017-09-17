@@ -1,11 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.core import mail
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     blog_name = models.CharField(max_length=1024, verbose_name='Название блога')
-    subscribes = models.ManyToManyField('Profile', blank=True)  # Подписки
+    subscribes = models.ManyToManyField("self", blank=True, symmetrical=False)  # Подписки
 
     def get_absolute_url(self):
         return '/author/%i/' % self.pk
@@ -13,28 +16,43 @@ class Profile(models.Model):
     def __str__(self):
         return (f'{self.user.last_name} {self.user.first_name}: {self.blog_name}')
 
-    # class Meta:
-    #     ordering = ('first_name',)
 
 User.profile = property(lambda u: Profile.objects.get_or_create(user=u)[0])
 
 
 class Post(models.Model):
-    title = models.CharField(verbose_name='Заголовок', max_length=256)
+    title = models.CharField(max_length=256, verbose_name='Заголовок')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
-    published = models.DateTimeField(blank=True, verbose_name='Опубликовано')
+    published = models.DateTimeField(blank=True, null=True, verbose_name='Опубликовано')
     content = models.TextField(verbose_name='Контент')
-    author = models.ForeignKey(Profile)
+    author = models.ForeignKey(Profile, related_name='author')
 
     def get_absolute_url(self):
-        return '/blog/%i/' % self.pk
+        return '/post/%i/' % self.pk
+
+    def __str__(self):
+        return f'{self.title}:{self.created}:{self.published}:{self.author}'
 
     class Meta:
         ordering = ('-published',)
 
 
+@receiver(post_save, sender=Post, dispatch_uid='update_post_blog')
+def update_post(sender, instance, **kwargs):
+    sender_profile = Profile.objects.get(pk=instance.author_id)
+    from_email = sender_profile.user.email
+    message = f'Пользователь {sender_profile.user.first_name} {sender_profile.user.last_name} разместил новую запись в своём блоге.'
+    subject = f'Новая запись в блоге {sender_profile.user.first_name} {sender_profile.user.last_name}'
+    recipient_list = [profile.user.email for profile in sender_profile.profile_set.all()]
+    print('models.update_post:', connection)
+    # Пока забьём...
+    # connection = mail.get_connection()
+    # send_mail(subject, message, from_email, recipient_list,)
+    # connection.send_messages([mail.EmailMessage(subject, message, from_email, recipient_list,),])
+    # connection.close()
+
+
 class ReadedPost(models.Model):
     post = models.OneToOneField(Post)
-    user = models.ForeignKey('Profile')
+    user = models.ForeignKey(Profile)
     readed = models.DateTimeField(blank=True)
-

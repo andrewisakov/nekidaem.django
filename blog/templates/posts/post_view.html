@@ -1,0 +1,7 @@
+{% extends 'base_generic.html' %} {% block title %}Запись {{ post.id }}{% endblock title %} {% block content %} {% if post %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.published }}</p>
+<p>{{ post.content }}</p>
+{% else %}
+<p>Увы, ничего нет...</p>
+{% endif %} {% endblock content %}
