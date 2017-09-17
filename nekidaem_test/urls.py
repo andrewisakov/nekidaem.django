@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^logout/$', views.LogOutView.as_view(), name='logout'),
     url(r'^subscribe/(?P<author_id>\d+)/$', views.Subscribe, name='subscribe_this_author'),
     url(r'^publicate/(?P<pk>\d+)/$', views.Publicate.as_view(), name='publicate_post'),
+    url(r'^create/(?P<user_id>\d+)/$', views.CreatePost.as_view(), name='create_post'),
 ]

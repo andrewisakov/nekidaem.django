@@ -9,10 +9,36 @@ from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse_lazy
 import datetime
-from .forms import LoginForm, PublicateConfirm
+from .forms import LoginForm, PublicateConfirm, CreatePostForm
 from .models import Post, Profile
 
 # Create your views here.
+
+
+class CreatePost(CreateView):
+    # model = Post
+    # fields = ['title', 'content', 'author']
+    form_class = CreatePostForm
+    template_name = 'posts/create_post.html'
+    success_url = reverse_lazy('index')
+
+    def get_initial(self):
+        initial = super(CreatePost, self).get_initial()
+        initial = initial.copy()
+        initial['author'] = self.request.user
+        return initial
+
+    def form_valid(self, form):
+        print('CreatePost.form_valid:', form.data)
+        form.data.author = self.request.user
+        return super(CreatePost, self).form_valid(form)
+        # new_post = Post.object.create()
+        # form.save()
+
+    def form_invalid(self, form):
+        form.data['author'] = [self.request.user]
+        print('CreatePost.form_invalid:', form.data)
+        return super(CreatePost, self).form_invalid(form)
 
 
 class Subscribe(FormView):
@@ -29,7 +55,7 @@ class Publicate(FormView):
     template_name = 'authors/post_publicate_confirm.html'
 
     def form_valid(self, form):
-        print('Publicate.form:', self.kwargs)
+        # print('Publicate.form:', self.kwargs)
         public_post = Post.objects.get(pk=int(self.kwargs['pk']))
         public_post.published = datetime.datetime.now()
         public_post.save()
@@ -70,13 +96,13 @@ class AuthorBlogList(ListView):
     template_name = 'posts/author_posts_list.html'
 
     def get_queryset(self):
-        print('AuthorBlogList.get_queryset:', self.kwargs)
+        # print('AuthorBlogList.get_queryset:', self.kwargs)
         author_id = int(self.kwargs['author_id'])
         return Post.objects.filter(author_id=author_id)
 
     def get_context_data(self, *args, **kwargs):
         context = super(AuthorBlogList, self).get_context_data(**kwargs)
-        print('AuthorBlogList.context:', context[self.context_object_name])
+        # print('AuthorBlogList.context:', context[self.context_object_name])
         return context
 
 
@@ -88,7 +114,7 @@ class RibbonBlogList(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(RibbonBlogList, self).get_context_data(*args, **kwargs)
-        print('RibbonBlogList.context:', context['ribbon'])
+        # print('RibbonBlogList.context:', context['ribbon'])
         # context['ribbon'] = Post.objects.filter(author in self.request.user.profile_set.all())
         return context
 

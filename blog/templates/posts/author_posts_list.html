@@ -1,4 +1,4 @@
-{% extends 'base_generic.html' %} {% block title %} Лента {% endblock title %} {% block content %} {% if author_posts_list %}
+{% extends 'base_generic.html' %} {% block title %}Мой Блог{% endblock title %} {% block content %} {% if author_posts_list %}
 <ul>
     {% for post in author_posts_list %}
     <li>
@@ -7,6 +7,7 @@
     </li>
     {% endfor %}
 </ul>
-{% else %}
+{% if user.id == post.author_id %}
+<a href="{% url 'create_post' pk=user.id %}" class="btn navbar-btn">Добавить запись</a> {% endif %} {% else %}
 <p>Автор пока ничего не написал...</p>
 {% endif %} {% endblock content %}
