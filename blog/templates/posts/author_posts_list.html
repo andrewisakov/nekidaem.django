@@ -1,7 +1,9 @@
 {% extends 'base_generic.html' %} {% block title %} Лента {% endblock title %} {% block content %} {% if author_posts_list %}
 <ul>
     {% for item in author_posts_list %}
-    <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a> {{ item.published }}</li>
+    <li>
+        <a href="{{ item.get_absolute_url }}">{{ item.title }}</a> if {{ item.published }} {{ item.published }} {{ else }} {{ endif }}
+    </li>
     {% endfor %}
 </ul>
 {% else %}

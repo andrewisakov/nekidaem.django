@@ -24,9 +24,9 @@
                     <li><a href="{% url 'login' %}" class="btn btn-default navbar-btn">Войти</a></li>
                     {% else %}
                     <li><a href="{% url 'logout' %}" class="btn btn-default navbar-btn">{{user.username}}:Выйти</a></li>
-                    {% comment %}
-                    <li><a href="{% url 'author_posts' %}">Мой блог</a></li> {% endcomment %} {% endif %}
-                    <li><a href="{% url 'ribbon' %}">Мои подписки</a></li>
+                    <li><a href="{% url 'author_blog_list' author_id=user.id %}">Мой блог</a></li>
+                    <li><a href="{% url 'ribbon' %}">Моя лента</a></li>
+                    {% endif %}
                 </ul>
                 {% endblock %}
             </div>

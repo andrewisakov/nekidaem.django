@@ -9,10 +9,28 @@ from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse_lazy
 
-from .forms import LoginForm
+from .forms import LoginForm, PublicateConfirm
 from .models import Post, Profile
 
 # Create your views here.
+
+
+class Subscribe(FormView):
+    pass
+
+
+class MarkReaded(FormView):
+    pass
+
+
+class Publicate(FormView):
+    form_class = PublicateConfirm
+    success_url = reverse_lazy('index')
+    template_name = 'authors/post_publicate_confirm.html'
+
+    def form_valid(self, form):
+        print('Publicate.form:', form)
+        return super(LoginView, self).form_valid(form)
 
 
 class PostsListView(ListView):
@@ -25,22 +43,14 @@ class PostsListView(ListView):
 class AutorsListView(ListView):
     model = Profile
     context_object_name = 'authors_list'
-    # queryset = Profile.objects.all()
     template_name = 'authors/authors_list.html'
 
 
 class AuthorDetails(DetailView):
     model = Profile
     context_object_name = 'author_details'
-    # queryset = Profile.get
     pk_url_kwarg = "pk"
     template_name = 'authors/author_details.html'
-
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super(AuthorDetails, self).get_context_data(*args, **kwargs)
-    #     print('AuthorDetails.context:', context)
-    #     context['author_posts'] = Post.objects.filter(author==context['author_details'])
-    #     return context
 
 
 class ViewPost(DetailView):
@@ -68,6 +78,7 @@ class AuthorBlogList(ListView):
 
 
 class RibbonBlogList(ListView):
+    """Отображение «моей ленты» (подписок)"""
     model = Post
     context_object_name = 'ribbon'
     template_name = 'posts/posts_ribbon.html'
@@ -76,17 +87,6 @@ class RibbonBlogList(ListView):
         context = super(RibbonBlogList, self).get_context_data(*args, **kwargs)
         print('RibbonBlogList.context:', context['ribbon'])
         # context['ribbon'] = Post.objects.filter(author in self.request.user.profile_set.all())
-        return context
-
-
-class ProfileView(DetailView):
-    model = Profile
-    pk_url_kwarg = "pk"
-
-    def get_context_data(self, **kwargs):
-        context = super(ProfileView, self).get_context_data(**kwargs)
-        # context[]
-        print('Profile.context:', context, context['profile'].profile_set.all())
         return context
 
 

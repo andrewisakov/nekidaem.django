@@ -50,6 +50,7 @@ def update_post(sender, instance, **kwargs):
     # send_mail(subject, message, from_email, recipient_list,)
     # connection.send_messages([mail.EmailMessage(subject, message, from_email, recipient_list,),])
     # connection.close()
+    # Не пошло. По уму тут асинхронка нужна...
 
 
 class ReadedPost(models.Model):

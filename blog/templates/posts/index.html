@@ -4,7 +4,7 @@
 <ul>
     {% for post in posts_list %}
     <li>
-        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+        {{ post.published }}<a href="{{ post.get_absolute_url }}"> {{ post.title }} </a>от {{ post.author.user.first_name }}
     </li>
     {% endfor %}
 </ul>
