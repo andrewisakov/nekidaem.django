@@ -7,7 +7,7 @@ from django.views.generic import FormView
 from django.views.generic import RedirectView
 from braces.views import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 import datetime
 from .forms import LoginForm, PublicateConfirm, CreatePostForm
 from .models import Post, Profile
@@ -20,7 +20,10 @@ class CreatePost(CreateView):
     # fields = ['title', 'content', 'author']
     form_class = CreatePostForm
     template_name = 'posts/create_post.html'
-    success_url = reverse_lazy('index')
+    # success_url = reverse_lazy('index')
+
+    def get_success_url(self):
+        return reverse('author_blog_list', args=(self.request.user.id,))
 
     def get_initial(self):
         initial = super(CreatePost, self).get_initial()
@@ -96,13 +99,13 @@ class AuthorBlogList(ListView):
     template_name = 'posts/author_posts_list.html'
 
     def get_queryset(self):
-        # print('AuthorBlogList.get_queryset:', self.kwargs)
         author_id = int(self.kwargs['author_id'])
         return Post.objects.filter(author_id=author_id)
 
     def get_context_data(self, *args, **kwargs):
         context = super(AuthorBlogList, self).get_context_data(**kwargs)
-        # print('AuthorBlogList.context:', context[self.context_object_name])
+        print('AuthorBlogList.context:', int(self.kwargs['author_id']), self.request.user.id)
+        context['can_create'] = int(self.kwargs['author_id']) == self.request.user.id
         return context
 
 

@@ -2,12 +2,12 @@
 <ul>
     {% for post in author_posts_list %}
     <li>
-        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a> {% if post.published %} {{ post.published }} {% else %}
-        <a href="{% url 'publicate_post' pk=post.id %}" class="btn navbar-btn">Опубликовать</a> {% endif %}
+        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a> {% if post.published %} {{ post.published }} {% else %} {% if user.id == post.author_id %}
+        <a href="{% url 'publicate_post' pk=post.id %}" class="btn navbar-btn">Опубликовать</a> {% endif %} {% endif %}
     </li>
     {% endfor %}
 </ul>
-{% if user.id == post.author_id %}
-<a href="{% url 'create_post' pk=user.id %}" class="btn navbar-btn">Добавить запись</a> {% endif %} {% else %}
+{% if can_create %}
+<a href="{% url 'create_post' user_id=user.id %}" class="btn navbar-btn">Добавить запись</a> {% endif %} {% else %}
 <p>Автор пока ничего не написал...</p>
 {% endif %} {% endblock content %}
