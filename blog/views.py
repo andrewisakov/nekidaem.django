@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse_lazy, reverse
 import datetime
 from .forms import LoginForm, PublicateConfirm, CreatePostForm
-from .models import Post, Profile
+from .models import Post, Profile, ReadedPost
 
 # Create your views here.
 
@@ -32,16 +32,14 @@ class CreatePost(CreateView):
         return initial
 
     def form_valid(self, form):
-        print('CreatePost.form_valid:', form.data)
+        # print('CreatePost.form_valid:', form.data)
         form.data.author = self.request.user
         return super(CreatePost, self).form_valid(form)
-        # new_post = Post.object.create()
-        # form.save()
 
-    def form_invalid(self, form):
-        form.data['author'] = [self.request.user]
-        print('CreatePost.form_invalid:', form.data)
-        return super(CreatePost, self).form_invalid(form)
+    # def form_invalid(self, form):
+    #     form.data['author'] = [self.request.user]
+    #     # print('CreatePost.form_invalid:', form.data)
+    #     return super(CreatePost, self).form_invalid(form)
 
 
 class Subscribe(FormView):
@@ -90,6 +88,17 @@ class ViewPost(DetailView):
     context_object_name = 'post'
     pk_url_kwarg = 'pk'
     template_name = 'posts/post_view.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ViewPost, self).get_context_data(*args, **kwargs)
+        if self.request.user.is_authenticated:
+            user_id = self.request.user.id
+            post_id = self.kwargs['pk']
+            readed, created = ReadedPost.objects.get_or_create(post_id=post_id, user_id=user_id,
+                            defaults={'post_id': post_id, 'user_id': user_id})
+            if created:
+                readed.save()
+        return context
 
 
 class AuthorBlogList(ListView):

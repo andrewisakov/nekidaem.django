@@ -25,7 +25,7 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
     published = models.DateTimeField(blank=True, null=True, verbose_name='Опубликовано')
     content = models.TextField(verbose_name='Контент')
-    author = models.ForeignKey(Profile, related_name='author')
+    author = models.ForeignKey(Profile, related_name='author', verbose_name='Автор')
 
     def get_absolute_url(self):
         return '/post/%i/' % self.pk
@@ -56,4 +56,7 @@ def update_post(sender, instance, **kwargs):
 class ReadedPost(models.Model):
     post = models.OneToOneField(Post)
     user = models.ForeignKey(Profile)
-    readed = models.DateTimeField(blank=True)
+    readed = models.DateTimeField(auto_now_add=True, verbose_name='Прочитано')
+
+    class Meta:
+        unique_together = (('post', 'user'),)
